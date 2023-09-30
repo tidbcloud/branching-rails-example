@@ -1,0 +1,32 @@
+development:
+  adapter: mysql2
+  database: <%= ENV.fetch("TIDB_DATABASE") { "test" } %>
+  username: <%= ENV.fetch("TIDB_USER") { "" } %>
+  host: <%= ENV.fetch("TIDB_HOST") { "" } %>
+  password: <%= ENV.fetch("TIDB_PASSWORD") { "" } %>
+  port: 4000
+  ssl_mode: :verify_identity
+  sslca: <%= ENV.fetch("TIDB_CERT_PATH") { "/etc/ssl/cert.pem" } %>
+
+test:
+  adapter: mysql2
+  database: <%= ENV.fetch("TIDB_TEST_DATABASE") { "test" } %>
+  username: <%= ENV.fetch("TIDB_TEST__USER") { "" } %>
+  host: <%= ENV.fetch("TIDB_TEST_HOST") { "" } %>
+  password: <%= ENV.fetch("TIDB_TEST_PASSWORD") { "" } %>
+  port: 4000
+  ssl_mode: :verify_identity
+  sslca: <%= ENV.fetch("TIDB_TEST_CERT_PATH") { "/etc/ssl/cert.pem" } %>
+
+# rake db:migrate RAILS_ENV=production
+# rake db:seed RAILS_ENV=production
+# rails server -e production
+production:
+  adapter: mysql2
+  database: <%= ENV.fetch("TIDB_PROD_DATABASE") { "test" } %>
+  username: <%= ENV.fetch("TIDB_PROD_USER") { "" } %>
+  host: <%= ENV.fetch("TIDB_PROD_HOST") { "" } %>
+  password: <%= ENV.fetch("TIDB_PROD_PASSWORD") { "" } %>
+  port: 4000
+  ssl_mode: :verify_identity
+  sslca: <%= ENV.fetch("TIDB_PROD_CERT_PATH") { "/etc/ssl/cert.pem" } %>
