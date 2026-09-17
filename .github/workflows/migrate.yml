@@ -1,0 +1,26 @@
+name: migrate-test
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: tidbcloud/wait-for-tidbcloud-branch@v0
+        id: wait-for-branch
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          public-key: ${{ secrets.TIDB_CLOUD_PUBLIC_KEY }}
+          private-key: ${{ secrets.TIDB_CLOUD_PRIVATE_KEY }}
+          timeout-seconds: 600
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: migrate-test
+        run: |
+          TIDB_USER=${{ steps.wait-for-branch.outputs.username }} TIDB_PASSWORD=${{ steps.wait-for-branch.outputs.password }} TIDB_HOST=${{ steps.wait-for-branch.outputs.host }} TIDB_CERT_PATH=/etc/ssl/certs/ca-certificates.crt rake db:migrate
