@@ -54,6 +54,17 @@ rake db:seed
 rails server
 ```
 
+## Article access
+
+Articles are public: anyone can list and read them. Creating, editing, and
+deleting articles requires administrator HTTP Basic authentication. Configure
+`ARTICLE_ADMIN_USERNAME` and `ARTICLE_ADMIN_PASSWORD` in the server environment
+before starting Rails. Use a strong password and serve the application over
+HTTPS, since HTTP Basic authentication does not encrypt credentials.
+
+If either variable is missing or blank, all article write actions are denied.
+There are no per-user or private articles in this example.
+
 ## Use branching GitHub integration
 
 Assume that you have run the rails project on a TiDB Serverless. Next, you can use the [Branching GitHub integration](https://docs.pingcap.com/tidbcloud/branch-github-integration) to connect the TiDB Serverless to this repo. Then a database branch will be created for every pull request to test the changes before merging the code to the master branch.

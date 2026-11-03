@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_admin, except: [:index, :show]
+
   def index
     @articles = Article.all
   end
@@ -43,6 +45,18 @@ class ArticlesController < ApplicationController
   end
 
   private
+
+  def authenticate_admin
+    authenticate_or_request_with_http_basic do |username, password|
+      admin_username = ENV["ARTICLE_ADMIN_USERNAME"]
+      admin_password = ENV["ARTICLE_ADMIN_PASSWORD"]
+
+      admin_username.present? && admin_password.present? &&
+        (ActiveSupport::SecurityUtils.secure_compare(username, admin_username) &
+         ActiveSupport::SecurityUtils.secure_compare(password, admin_password))
+    end
+  end
+
   def article_params
     params.require(:article).permit(:title, :body)
   end
